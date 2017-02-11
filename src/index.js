@@ -8,7 +8,6 @@ let web3 = new Web3();
 
 let app = express();
 
-
 /* Begin convenience constants block */
 const VOTER_1 = 1; // box for your stempas
 const VOTER_2 = 2;
@@ -88,9 +87,14 @@ app.post('/api/cashStempas', function (req, res) {
 
     // TODO: Everything. Mostly the one-time blind signing, and administrating
     // your very own wallet.
-    if (BALLOTS.includes(req.body.tx + BALLOT_offset) && VOTERS.includes(req.body.stempas_id)){
-        let voter_wallet = get_wallet(req.body.stempas_id);
-        let ballot_wallet = get_wallet(req.body.tx + BALLOT_offset);
+    console.log('request user action', req.body);
+
+    var tx = parseInt(req.body.tx);
+    var stempas_id = parseInt(req.body.stempas_id);
+    
+    if (BALLOTS.includes(tx + BALLOT_offset) && VOTERS.includes(stempas_id)){
+        let voter_wallet = get_wallet(stempas_id);
+        let ballot_wallet = get_wallet(tx + BALLOT_offset);
 
         // TODO integrate with contract
         //voter_wallet = get_wallet(req.body.id); // TODO should actually be certified by client in prod.
@@ -101,16 +105,13 @@ app.post('/api/cashStempas', function (req, res) {
         // ^- this should be the blind signed transaction instead. It should
         // only be _signed_ server side, and then completed and uploaded to the
         // blockchain by the client/voter 
-	      console.log('request user action', req.body);
-	      res.send({id: req.body.tx});
+	    res.send({id: tx});
 
     } else { // invalid ballot
         // oh noes
         console.error("inaccessable");
         res.status(500).send('You took a wrong turn somewhere...');
     }
-	  console.log('request user action', req.body);
-	  res.send('POST request to the user API');
 });
 
 app.post('/api/verifyPerson', function (req, res) {
@@ -122,11 +123,12 @@ app.post('/api/verifyPerson', function (req, res) {
     // response is:
     //  id: 1 | 2 | 3 (probably the same one XD, but this is your "signed" stempas)
 
-	  console.log('request user action', req.body);
-    if (VOTERS.includes(req.body.id)){
-        voter_wallet = get_wallet(req.body.id); // TODO should actually be certified by client in prod.
+	console.log('request user action', req.body);
+    var wallet_id = parseInt(req.body.id);
+    if (VOTERS.includes(wallet_id)){
+        voter_wallet = get_wallet(wallet_id); // TODO should actually be certified by client in prod.
         web3.eth.sendTransaction({from: stempas, to: voter_wallet , value: web3.toWei(100), gasLimit: 21000, gasPrice: 0});
-	      res.send({id: req.body.id});
+	      res.send({id: wallet_id});
     } else {
         console.error("inaccessable");
         res.status(500).send('You took a wrong turn somewhere...');
@@ -140,9 +142,13 @@ app.post('/api/vote', function (req, res) {
        kandidaat: 1 | 2
        stembiljet_id: 1 | 2 | 3
        */
-    if (BALLOTS.includes(req.body.stembiljet_id + BALLOT_offset) && CANDIDATES.includes(req.body.kandidaat + CANDIDATE_offset)){
-        let ballot_wallet = get_wallet(req.body.stembiljet_id + BALLOT_offset);
-        let candidate_wallet = get_wallet(req.body.kandidaat + CANDIDATE_offset);
+
+    var stembiljet_id = req.body.stembiljet_id; 
+    var kandidaat = req.body.kandidaat;
+
+    if (BALLOTS.includes(stembiljet_id + BALLOT_offset) && CANDIDATES.includes(kandidaat + CANDIDATE_offset)){
+        let ballot_wallet = get_wallet(stembiljet_id + BALLOT_offset);
+        let candidate_wallet = get_wallet(kandidaat + CANDIDATE_offset);
 
         web3.eth.sendTransaction({from: ballot_wallet, to: candidate_wallet , value: web3.toWei(100), gasLimit: 21000, gasPrice: 0});
 	      console.log('request user action', req.body);
@@ -156,5 +162,3 @@ app.post('/api/vote', function (req, res) {
 app.listen(app.get('port'), function() {
     console.log('Server started: http://localhost:' + app.get('port') + '/');
 });
-
-
