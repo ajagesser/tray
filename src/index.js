@@ -90,7 +90,7 @@ app.post('/api/cashStempas', function (req, res) {
     // your very own wallet.
     if (BALLOTS.includes(req.body.tx + BALLOT_offset) && VOTERS.includes(req.body.stempas_id)){
         let voter_wallet = get_wallet(req.body.stempas_id);
-        let ballot_wallet = get_wallet(req.body.tx);
+        let ballot_wallet = get_wallet(req.body.tx + BALLOT_offset);
 
         // TODO integrate with contract
         //voter_wallet = get_wallet(req.body.id); // TODO should actually be certified by client in prod.
