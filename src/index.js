@@ -143,8 +143,8 @@ app.post('/api/vote', function (req, res) {
        stembiljet_id: 1 | 2 | 3
        */
 
-    var stembiljet_id = req.body.stembiljet_id; 
-    var kandidaat = req.body.kandidaat;
+    var stembiljet_id = parseInt(req.body.stembiljet_id); 
+    var kandidaat = parseInt(req.body.kandidaat);
 
     if (BALLOTS.includes(stembiljet_id + BALLOT_offset) && CANDIDATES.includes(kandidaat + CANDIDATE_offset)){
         let ballot_wallet = get_wallet(stembiljet_id + BALLOT_offset);
