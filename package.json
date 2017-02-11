@@ -18,5 +18,21 @@
   "bugs": {
     "url": "https://github.com/ajagesser/tray/issues"
   },
-  "homepage": "https://github.com/ajagesser/tray#readme"
+  "homepage": "https://github.com/ajagesser/tray#readme",
+  "dependencies" :{
+     "babel-core": "^6.13.2",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-stage-0": "^6.5.0",
+    "body-parser": "^1.15.2",
+    "cors": "^2.7.1",
+    "express": "^4.14.0",
+    "fs": "0.0.1-security"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.11.4"
+  }
 }
+
