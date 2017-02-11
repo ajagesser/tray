@@ -1,0 +1,22 @@
+{
+  "name": "blockchaintray",
+  "version": "1.0.0",
+  "description": "The Express JSON server to let the app communicate with blockchain.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajagesser/tray.git"
+  },
+  "keywords": [
+    "API"
+  ],
+  "author": "Viresh Jagesser",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajagesser/tray/issues"
+  },
+  "homepage": "https://github.com/ajagesser/tray#readme"
+}
